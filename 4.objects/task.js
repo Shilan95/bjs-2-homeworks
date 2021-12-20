@@ -27,7 +27,7 @@ if (this.marks === undefined) {
 }
 
 Student.prototype.getAverage = function () {
-return this.marks.reduce((acc, rating) => acc + rating) / this.marks.length;
+return this.marks.reduce((rating, newRating) => rating + newRating) / this.marks.length;
 }
 
 Student.prototype.exclude = function(reason) {

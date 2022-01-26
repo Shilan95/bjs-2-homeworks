@@ -7,11 +7,12 @@ class AlarmClock {
   }
 
   addClock(time, callback, id) {
-    if (!id)
+    if (!id) {
       throw new Error(`error text`);
-    const findId = this.thisIsOriginalId(id);
-    if (findId)
+    }
+    if (this.alarmCollection.some(item => item.id === id)) {
       return console.error(`Такой будильник уже существует`);
+    }
     this.alarmCollection.push({
       time,
       callback,
@@ -19,14 +20,11 @@ class AlarmClock {
     });
   }
 
-  thisIsOriginalId(id) {
-    return this.alarmCollection.some(item => item.id === id);
-  }
-
   removeClock(id) {
     const findIndex = this.alarmCollection.findIndex(item => item.id === id);
-    if (findIndex === -1)
+    if (findIndex === -1) {
       return false;
+    }
     this.alarmCollection.splice(findIndex, 1);
     return true;
   }
@@ -36,21 +34,24 @@ class AlarmClock {
   }
 
   start() {
-    if (this.timerId === null)
+    if (this.timerId === null) {
       this.timerId = setInterval(() => {
         this.alarmCollection.forEach(item => this.checkClock(item))
       }, 60000)
+    }
   }
 
   checkClock(clock) {
     const currentTime = this.getCurrentFormattedTime();
-    if (clock.time === currentTime)
+    if (clock.time === currentTime) {
       clock.callback();
+    }
   }
 
   stop() {
-    if (this.timerId !== null)
+    if (this.timerId !== null) {
       clearInterval(this.timerId);
+    }
     this.timerId = null;
     console.log(`Будильник остановлен!`)
   }
@@ -60,7 +61,7 @@ class AlarmClock {
   }
 
   clearAlarms() {
-    stop();
+    this.stop();
     this.alarmCollection = [];
     console.log(`Все будильники удалены!`)
   }
@@ -84,4 +85,4 @@ class AlarmClock {
   clock.addClock(`${futureTime(4)}`, () => console.log(`Хватит спать!`), 4);
   clock.printAlarms();
   clock.start();
-})()
+})
